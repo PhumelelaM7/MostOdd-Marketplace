@@ -1,0 +1,27 @@
+{% extends "store/base.html" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block content %}
+
+<h1>Create an Account</h1>
+
+<p>
+    Register to start shopping on MostOdd Marketplace.
+</p>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary">
+        Register
+    </button>
+
+</form>
+
+{% endblock %}

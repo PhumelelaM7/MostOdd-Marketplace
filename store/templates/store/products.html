@@ -1,0 +1,126 @@
+{% extends "store/base.html" %}
+
+{% block title %}
+Products
+{% endblock %}
+
+{% block content %}
+
+<h1>Products</h1>
+
+<div class="row">
+
+    <!-- Loop through every product -->
+    {% for product in products %}
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card h-100">
+
+            <div class="card-body">
+
+                <!-- Product Name -->
+                <h3>{{ product.name }}</h3>
+
+                <!-- Product Description -->
+                <p>{{ product.description }}</p>
+
+                <!-- Product Price -->
+                <p>
+                    <strong>Price:</strong>
+                    R{{ product.price }}
+                </p>
+
+                <!-- Available Stock -->
+                <p>
+                    <strong>Stock:</strong>
+                    {{ product.stock }}
+                </p>
+
+                <!-- Store Name -->
+                <p>
+                    <strong>Store:</strong>
+                    {{ product.store.name }}
+                </p>
+
+                <!-- Add product to shopping cart -->
+                <a href="{% url 'add_to_cart' product.id %}"
+                   class="btn btn-success">
+
+                    Add to Cart
+
+                </a>
+
+                <hr>
+
+                <!-- Product Reviews -->
+                <h5>Customer Reviews</h5>
+
+                <!-- Check if the product has any reviews -->
+                {% if product.reviews.all %}
+
+                    <!-- Loop through each review -->
+                    {% for review in product.reviews.all %}
+
+                    <div class="card mt-2">
+
+                        <div class="card-body">
+
+                            <!-- Username -->
+                            <strong>
+                                {{ review.user.username }}
+                            </strong>
+
+                            <!-- Verified Purchase Badge -->
+                            {% if review.verified_purchase %}
+
+                            <span class="badge bg-success">
+                                Verified Purchase
+                            </span>
+
+                            {% endif %}
+
+                            <br>
+
+                            <!-- Review Rating -->
+                            <strong>Rating:</strong>
+                            {{ review.rating }}/5
+
+                            <br><br>
+
+                            <!-- Review Comment -->
+                            {{ review.comment }}
+
+                        </div>
+
+                    </div>
+
+                    {% empty %}
+
+                    <p>No reviews yet.</p>
+
+                    {% endfor %}
+
+                {% endif %}
+
+                <br>
+
+                <!-- Button to leave a review -->
+                <a href="{% url 'add_review' product.id %}"
+                   class="btn btn-outline-primary">
+
+                    Leave Review
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

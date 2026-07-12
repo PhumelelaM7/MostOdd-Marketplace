@@ -1,0 +1,27 @@
+{% extends "store/base.html" %}
+
+{% block title %}
+Create Store
+{% endblock %}
+
+{% block content %}
+
+<h1>Create Your Store</h1>
+
+<p>
+Fill in the details below to create your marketplace store.
+</p>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-success">
+        Create Store
+    </button>
+
+</form>
+
+{% endblock %}

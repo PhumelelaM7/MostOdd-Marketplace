@@ -1,0 +1,84 @@
+{% extends "store/base.html" %}
+
+{% block title %}
+Shopping Cart
+{% endblock %}
+
+{% block content %}
+
+<h1>Shopping Cart</h1>
+
+{% if products %}
+
+<table class="table">
+
+    <thead>
+
+        <tr>
+
+            <th>Product</th>
+
+            <th>Quantity</th>
+
+            <th>Price</th>
+
+            <th>Subtotal</th>
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for item in products %}
+
+        <tr>
+
+            <td>{{ item.product.name }}</td>
+
+            <td>
+
+                <a href="{% url 'update_cart' item.product.id 'decrease' %}" class="btn btn-sm btn-secondary">
+                    -
+                </a>
+
+                {{ item.quantity }}
+
+                <a href="{% url 'update_cart' item.product.id 'increase' %}" class="btn btn-sm btn-secondary">
+                    +
+                </a>
+
+            </td>
+
+            <td>R{{ item.product.price }}</td>
+
+            <td>R{{ item.subtotal }}</td>
+
+            <td>
+                <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-danger btn-sm">
+                    Remove
+                </a>
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+<h3>Total: R{{ total }}</h3>
+
+<a href="{% url 'checkout' %}" class="btn btn-success">
+    Proceed to Checkout
+</a>
+
+{% else %}
+
+<p>Your cart is empty.</p>
+
+{% endif %}
+
+{% endblock %}

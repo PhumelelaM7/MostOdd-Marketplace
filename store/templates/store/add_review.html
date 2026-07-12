@@ -1,0 +1,37 @@
+{% extends "store/base.html" %}
+
+{% block title %}
+Leave Review
+{% endblock %}
+
+{% block content %}
+
+<h1>Review {{ product.name }}</h1>
+
+{% if verified %}
+
+<div class="alert alert-success">
+    Verified Purchase
+</div>
+
+{% else %}
+
+<div class="alert alert-warning">
+    Unverified Review
+</div>
+
+{% endif %}
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary">
+        Submit Review
+    </button>
+
+</form>
+
+{% endblock %}

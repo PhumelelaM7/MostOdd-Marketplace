@@ -1,0 +1,38 @@
+{% extends "store/base.html" %}
+
+{% block title %}
+Edit Product
+{% endblock %}
+
+{% block content %}
+
+<h1>Edit Product</h1>
+
+<!-- Product editing form -->
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <!-- Save the updated product -->
+    <button
+        type="submit"
+        class="btn btn-primary">
+
+        Save Changes
+
+    </button>
+
+    <!-- Return to the Vendor Dashboard -->
+    <a
+        href="{% url 'vendor_dashboard' %}"
+        class="btn btn-secondary">
+
+        Cancel
+
+    </a>
+
+</form>
+
+{% endblock %}

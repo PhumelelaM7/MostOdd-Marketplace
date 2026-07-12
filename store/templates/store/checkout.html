@@ -1,0 +1,33 @@
+{% extends "store/base.html" %}
+
+{% block title %}
+Order Complete
+{% endblock %}
+
+{% block content %}
+
+<h1>Order Successful!</h1>
+
+<p>
+    Thank you for shopping with MostOdd Marketplace.
+</p>
+
+<hr>
+
+<h4>Order Number:</h4>
+
+<p>
+    #{{ order.id }}
+</p>
+
+<h4>Total Paid:</h4>
+
+<p>
+    <strong>R{{ order.total }}</strong>
+</p>
+
+<a href="{% url 'home' %}" class="btn btn-primary">
+    Continue Shopping
+</a>
+
+{% endblock %}

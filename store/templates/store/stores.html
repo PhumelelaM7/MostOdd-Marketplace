@@ -1,0 +1,47 @@
+{% extends "store/base.html" %}
+
+{% block title %}
+Stores
+{% endblock %}
+
+{% block content %}
+
+<h1>Our Stores</h1>
+
+<p>
+    Browse the trusted stores that sell on MostOdd Marketplace.
+</p>
+
+<div class="row">
+
+{% if stores %}
+
+    {% for store in stores %}
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <h3>{{ store.name }}</h3>
+
+                    <p>{{ store.description }}</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+<p>No stores available.</p>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

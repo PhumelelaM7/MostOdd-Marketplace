@@ -1,0 +1,88 @@
+Creating an ecommerce website
+
+Part 1
+Project set up
+    Virtual environment
+    Django Project
+    Django app
+    Planning folder
+    
+
+Part 2
+Database design
+Models
+Relationships
+Migrations
+Django Admin
+
+Part 3
+Authentication
+    Registration
+        email
+    Login
+        Username
+        Password
+User Groups (Buyer/Vendor)
+    Permissions 
+        Buyer
+        Vendor
+Permissions
+    email
+
+Part 4
+Vendor CRUD
+Store CRUD
+Product CRUD
+
+Part 5
+Buyer functionality
+Cart using sessions
+Checkout
+Invoice
+
+Part 6
+Reviews
+Password reset
+Email
+MariaDB
+
+Part 7
+Documentation
+Testing
+GitHub
+Submission Reviews
+################################################################################
+Buyer   
+    Creates an account
+    Logs In
+    Browse store
+    View products
+    Adds products to a shopping Cart
+    Checks out
+    Leaves Reviews
+
+Vendor
+    Creates an account
+    Creates a store
+    Adds products
+    Updates products
+    Deletes products
+
+Administrator
+    Manages everything through Django Admin
+
+##################################################################################
+User
+    Buyer
+        Cart
+        Reviews
+        Orders
+            Checkout
+    Vendor
+        Store
+            Products
+                Inventory
+##################################################################################
+
+
+
