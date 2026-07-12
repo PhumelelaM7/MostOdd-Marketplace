@@ -30,13 +30,19 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = ['store',
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third-party apps
+    'rest_framework',
+
+    # Local apps
+    'store',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +150,20 @@ EMAIL_HOST_PASSWORD = "jdli uadt mxhc anrj"
 
 # Default sender email
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Django REST Framework configuration
+# Controls how users interact with the API
+
+REST_FRAMEWORK = {
+
+    # Allows logged-in users to perform changes
+    # while still allowing public users to view data
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+
+    # Uses Django's built-in login system
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+}
