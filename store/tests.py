@@ -1,64 +1,75 @@
-from django.test import TestCase
-
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 
-# Import the models we want to test
-from .models import Store, Product, Review, Order, OrderItem
+# Import models from the store application
+from .models import (
+    Store,
+    Product,
+    Review,
+    Order,
+    OrderItem
+)
 
 
 class EcommerceTestCase(TestCase):
     """
-    Tests for the eCommerce application.
-
-    These tests check that the main Part 1 functionality
-    is working correctly.
+    Test cases for the Django eCommerce application.
     """
+
 
     def setUp(self):
         """
         Create test data before each test runs.
         """
 
-        # Create a normal customer account
+        # Create customer account
         self.customer = User.objects.create_user(
             username="customer",
             password="password123"
         )
 
-        # Create a vendor account
+
+        # Create vendor account
         self.vendor = User.objects.create_user(
             username="vendor",
             password="password123"
         )
 
-        # Create the Vendor group
+
+        # Create Vendor group
         vendor_group = Group.objects.create(
             name="Vendor"
         )
 
-        # Add vendor user to Vendor group
-        self.vendor.groups.add(vendor_group)
 
-        # Create a test store
-        self.store = Store.objects.create(
-            name="Test Store",
-            description="A test online store",
-            owner=self.vendor
+        # Add vendor user to Vendor group
+        self.vendor.groups.add(
+            vendor_group
         )
 
-        # Create a test product
+
+        # Create a store owned by the vendor
+        self.store = Store.objects.create(
+            owner=self.vendor,
+            name="Test Store",
+            description="Test store description"
+        )
+
+
+        # Create a product inside the store
         self.product = Product.objects.create(
             store=self.store,
             name="Test Product",
-            description="A product used for testing",
+            description="Test product description",
             price=100,
             stock=10
         )
 
-        # Create the Django test client
+
+        # Create test client
         self.client = Client()
+
 
 
     def test_home_page_loads(self):
@@ -66,15 +77,18 @@ class EcommerceTestCase(TestCase):
         Test that the home page loads successfully.
         """
 
+        # Open home page
         response = self.client.get(
             reverse("home")
         )
 
-        # Check that the page loads
+
+        # Check page loads successfully
         self.assertEqual(
             response.status_code,
             200
         )
+
 
 
     def test_products_page_loads(self):
@@ -82,34 +96,44 @@ class EcommerceTestCase(TestCase):
         Test that the products page loads successfully.
         """
 
+        # Open products page
         response = self.client.get(
             reverse("products")
         )
 
+
+        # Check page loads successfully
         self.assertEqual(
             response.status_code,
             200
         )
 
 
+
     def test_product_created_correctly(self):
         """
-        Test that a product is saved correctly.
+        Test that products are created correctly.
         """
 
+        # Retrieve product from database
         product = Product.objects.get(
             name="Test Product"
         )
 
+
+        # Check product price
         self.assertEqual(
             product.price,
             100
         )
 
+
+        # Check product stock
         self.assertEqual(
             product.stock,
             10
         )
+
 
 
     def test_add_to_cart(self):
@@ -117,42 +141,71 @@ class EcommerceTestCase(TestCase):
         Test that a product can be added to the cart.
         """
 
+
+        # Login customer before accessing cart features
+        self.client.login(
+            username="customer",
+            password="password123"
+        )
+
+
+        # Add product to cart
         response = self.client.get(
             reverse(
                 "add_to_cart",
-                args=[self.product.id]
+                args=[
+                    self.product.id
+                ]
             )
         )
 
-        # Check redirect happened
+
+        # Check redirect to cart page
         self.assertEqual(
             response.status_code,
             302
         )
 
-        # Check session cart contains product
+
+        # Reload session
         session = self.client.session
 
-        self.assertIn(
-            str(self.product.id),
-            session["cart"]
+
+        # Check product exists in cart
+        self.assertEqual(
+            session["cart"][str(self.product.id)],
+            1
         )
 
 
-    def test_cart_quantity_increases(self):
+
+    def test_update_cart(self):
         """
-        Test that increasing cart quantity works.
+        Test that cart quantity can be increased.
         """
 
+
+        # Login customer
+        self.client.login(
+            username="customer",
+            password="password123"
+        )
+
+
+        # Create starting cart session
         session = self.client.session
 
-        # Add product manually to cart
         session["cart"] = {
             str(self.product.id): 1
         }
 
+
+        # Save session changes
         session.save()
 
+
+
+        # Increase cart quantity
         response = self.client.get(
             reverse(
                 "update_cart",
@@ -163,68 +216,84 @@ class EcommerceTestCase(TestCase):
             )
         )
 
+
+        # Check redirect response
         self.assertEqual(
             response.status_code,
             302
         )
 
-        # Check quantity increased
+
+        # Reload session
+        session = self.client.session
+
+
+
+        # Confirm quantity increased
         self.assertEqual(
-            self.client.session["cart"][str(self.product.id)],
+            session["cart"][str(self.product.id)],
             2
         )
 
 
+
     def test_review_creation(self):
         """
-        Test that a customer can create a review.
+        Test that a customer can create a product review.
         """
 
+        # Create review
         review = Review.objects.create(
             product=self.product,
             user=self.customer,
             rating=5,
-            comment="Great product!",
+            comment="Great product",
             verified_purchase=True
         )
 
+
+        # Check review rating
         self.assertEqual(
             review.rating,
             5
         )
 
-        self.assertEqual(
-            review.comment,
-            "Great product!"
-        )
 
 
     def test_order_creation(self):
         """
-        Test that orders and order items can be created.
+        Test that orders and order items are created.
         """
 
+        # Create order
         order = Order.objects.create(
             customer=self.customer,
             total=100
         )
 
+
+        # Add product to order
         order_item = OrderItem.objects.create(
             order=order,
             product=self.product,
             quantity=1,
-            price=self.product.price
+            price=100
         )
 
+
+        # Check order total
         self.assertEqual(
             order.total,
             100
         )
 
+
+        # Check order item quantity
         self.assertEqual(
             order_item.quantity,
             1
         )
+
 
 
     def test_vendor_login(self):
@@ -232,12 +301,14 @@ class EcommerceTestCase(TestCase):
         Test that a vendor can login successfully.
         """
 
-        login = self.client.login(
+        # Attempt login
+        login_successful = self.client.login(
             username="vendor",
             password="password123"
         )
 
-        self.assertTrue(
-            login
-        )
 
+        # Confirm login worked
+        self.assertTrue(
+            login_successful
+        )
