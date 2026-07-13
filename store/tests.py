@@ -17,7 +17,6 @@ class EcommerceTestCase(TestCase):
     Test cases for the Django eCommerce application.
     """
 
-
     def setUp(self):
         """
         Create test data before each test runs.
@@ -29,25 +28,21 @@ class EcommerceTestCase(TestCase):
             password="password123"
         )
 
-
         # Create vendor account
         self.vendor = User.objects.create_user(
             username="vendor",
             password="password123"
         )
 
-
         # Create Vendor group
         vendor_group = Group.objects.create(
             name="Vendor"
         )
 
-
         # Add vendor user to Vendor group
         self.vendor.groups.add(
             vendor_group
         )
-
 
         # Create a store owned by the vendor
         self.store = Store.objects.create(
@@ -55,7 +50,6 @@ class EcommerceTestCase(TestCase):
             name="Test Store",
             description="Test store description"
         )
-
 
         # Create a product inside the store
         self.product = Product.objects.create(
@@ -66,11 +60,8 @@ class EcommerceTestCase(TestCase):
             stock=10
         )
 
-
         # Create test client
         self.client = Client()
-
-
 
     def test_home_page_loads(self):
         """
@@ -82,14 +73,11 @@ class EcommerceTestCase(TestCase):
             reverse("home")
         )
 
-
         # Check page loads successfully
         self.assertEqual(
             response.status_code,
             200
         )
-
-
 
     def test_products_page_loads(self):
         """
@@ -101,14 +89,11 @@ class EcommerceTestCase(TestCase):
             reverse("products")
         )
 
-
         # Check page loads successfully
         self.assertEqual(
             response.status_code,
             200
         )
-
-
 
     def test_product_created_correctly(self):
         """
@@ -120,13 +105,11 @@ class EcommerceTestCase(TestCase):
             name="Test Product"
         )
 
-
         # Check product price
         self.assertEqual(
             product.price,
             100
         )
-
 
         # Check product stock
         self.assertEqual(
@@ -134,20 +117,16 @@ class EcommerceTestCase(TestCase):
             10
         )
 
-
-
     def test_add_to_cart(self):
         """
         Test that a product can be added to the cart.
         """
-
 
         # Login customer before accessing cart features
         self.client.login(
             username="customer",
             password="password123"
         )
-
 
         # Add product to cart
         response = self.client.get(
@@ -159,17 +138,14 @@ class EcommerceTestCase(TestCase):
             )
         )
 
-
         # Check redirect to cart page
         self.assertEqual(
             response.status_code,
             302
         )
 
-
         # Reload session
         session = self.client.session
-
 
         # Check product exists in cart
         self.assertEqual(
@@ -177,20 +153,16 @@ class EcommerceTestCase(TestCase):
             1
         )
 
-
-
     def test_update_cart(self):
         """
         Test that cart quantity can be increased.
         """
-
 
         # Login customer
         self.client.login(
             username="customer",
             password="password123"
         )
-
 
         # Create starting cart session
         session = self.client.session
@@ -199,11 +171,8 @@ class EcommerceTestCase(TestCase):
             str(self.product.id): 1
         }
 
-
         # Save session changes
         session.save()
-
-
 
         # Increase cart quantity
         response = self.client.get(
@@ -216,26 +185,20 @@ class EcommerceTestCase(TestCase):
             )
         )
 
-
         # Check redirect response
         self.assertEqual(
             response.status_code,
             302
         )
 
-
         # Reload session
         session = self.client.session
-
-
 
         # Confirm quantity increased
         self.assertEqual(
             session["cart"][str(self.product.id)],
             2
         )
-
-
 
     def test_review_creation(self):
         """
@@ -251,14 +214,11 @@ class EcommerceTestCase(TestCase):
             verified_purchase=True
         )
 
-
         # Check review rating
         self.assertEqual(
             review.rating,
             5
         )
-
-
 
     def test_order_creation(self):
         """
@@ -271,7 +231,6 @@ class EcommerceTestCase(TestCase):
             total=100
         )
 
-
         # Add product to order
         order_item = OrderItem.objects.create(
             order=order,
@@ -280,21 +239,17 @@ class EcommerceTestCase(TestCase):
             price=100
         )
 
-
         # Check order total
         self.assertEqual(
             order.total,
             100
         )
 
-
         # Check order item quantity
         self.assertEqual(
             order_item.quantity,
             1
         )
-
-
 
     def test_vendor_login(self):
         """
@@ -306,7 +261,6 @@ class EcommerceTestCase(TestCase):
             username="vendor",
             password="password123"
         )
-
 
         # Confirm login worked
         self.assertTrue(
