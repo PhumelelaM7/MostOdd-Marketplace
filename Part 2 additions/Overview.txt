@@ -1,0 +1,165 @@
+Django eCommerce Application Part 2 - Development Plan
+
+Overview
+
+For Part 2 of the Django eCommerce application, I will continue working
+on the marketplace application that was created in Part 1.
+
+The main goal of this part is to add an API to allow data from the
+application to be accessed through REST endpoints and to connect the
+application to an external API.
+
+I will build on the existing features such as stores, products, users,
+orders and reviews.
+
+Part 1: Adding REST API Functionality
+
+1.  Install Django REST Framework
+
+The first step will be installing Django REST Framework and adding it to
+the Django project settings.
+
+This will allow the application to create API endpoints and return data
+in JSON format.
+
+2.  Create API Serializers
+
+I will create serializers to convert the existing Django models into
+data that can be displayed through the API.
+
+The main models that will be used are:
+
+-   Store
+-   Product
+-   Review
+
+The serializers will allow information from the database to be converted
+into JSON responses.
+
+3.  Create API Views
+
+API views will be created to handle requests from users.
+
+The API will allow:
+
+Vendors: - Create stores. - Add products. - Access information related
+to their store.
+
+Customers and vendors: - View stores. - View products. - View reviews.
+
+4.  Add API URL Routes
+
+New URL paths will be created for accessing the API.
+
+Examples:
+
+/api/stores/ /api/products/ /api/reviews/
+
+These routes will connect the API requests to the correct views.
+
+5.  Add Authentication
+
+Authentication will be added to protect certain actions.
+
+For example:
+
+-   Vendors should only be able to edit their own stores and products.
+-   Users should be required to log in before performing restricted
+    actions.
+
+6.  Test the API
+
+The API will be tested to make sure:
+
+-   Data can be retrieved correctly.
+-   New records can be created.
+-   Authentication works.
+-   Responses are returned correctly.
+
+Testing can be done using the Django REST Framework browser interface or
+tools such as Postman.
+
+API Sequence Diagram
+
+A sequence diagram will be created to show how a user interacts with the
+API.
+
+The diagram will show:
+
+-   User
+-   API
+-   Authentication
+-   Database
+
+The process will show how a request is sent, checked, processed and
+returned.
+
+Part 2: Adding a Third-Party API
+
+1.  Select an External API
+
+A Reddit API will be used to display posts from a chosen subreddit.
+
+Possible examples:
+
+-   r/python
+-   r/django
+
+2.  Create Reddit Helper Function
+
+A helper function will be created to handle communication with Reddit.
+
+The function will:
+
+-   Create the Reddit API URL.
+-   Send a GET request.
+-   Add the required User-Agent header.
+-   Process the returned JSON data.
+-   Return useful post information.
+
+3.  Create Reddit View
+
+A Django view will be created to use the Reddit helper function.
+
+The view will collect the Reddit posts and send them to a template.
+
+4.  Create Reddit Template
+
+A new page will be created to display Reddit information.
+
+The page will show:
+
+-   Post title.
+-   Username of the author.
+-   Link to the original Reddit post.
+
+5.  Add Reddit URL
+
+A URL will be created so users can access the Reddit feed.
+
+Example:
+
+/reddit/
+
+6.  Test Reddit Integration
+
+The integration will be tested by running the Django server and opening
+the Reddit page.
+
+The expected result is that Reddit posts will display correctly inside
+the application.
+
+Final Checks Before Submission
+
+Before completing Part 2, I will check that:
+
+-   The Django application still runs correctly.
+-   The existing Part 1 features still work.
+-   The API endpoints work correctly.
+-   Authentication restrictions work.
+-   Reddit information displays correctly.
+-   All changes are committed to GitHub.
+-   Documentation is updated.
+
+This plan will be followed while developing the additional features for
+the Django eCommerce application.
